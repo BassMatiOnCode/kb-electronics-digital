@@ -1,0 +1,146 @@
+﻿<html lang="en"><head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/inc/webcat/page-structure/demo-page.css" />
+<style>
+table.webcat-logic { border-collapse : collapse }
+table.webcat-logic td, 
+table.webcat-logic th { border : 1px solid silver ; padding : 5px ; min-width : 30px ; text-align : center }
+table.webcat-logic th { font-weight : normal }
+.webcat-overline { text-decoration : overline }
+</style>
+<title>Flipflops</title>
+
+</head><body>
+
+<h1>Flip-flops</h1>
+
+<p>Flip-flops can be divided into two large groups, asynchronous <em>transparent latches</em>, and <em>master-slave flip-flops</em> with an input sampling stage.</p>
+
+<p>The core structure is a two stage amplifier, where each state is inverting. A feedback line  creates a positive feedback that ensures that the current state of the amplifier is maintained. An activated input line breaks the feedback loop so that the state of the associated stage is <em>forced to change</em>. The feedback loop then toggles the state of the other stage. As an effect, the system remains in the new state even if the input returns to an inactive value.</p>
+
+<h2 cbc>RS Latch with Transistors</h2><div>
+
+<figure class="figure"><figcaption>Schematics</figcaption>
+<img src="rs-latch-transistor-2/fig-001.png" width="500" />
+</figure>
+
+<figure class="figure"><figcaption>Simulation</figcaption>
+<img src="rs-latch-transistor-2/fig-002.png" width="500" />
+</figure>
+
+</div><!--h2--RS Latch with Transistors-->
+
+<h2 cbc>NAND RS Latch</h2><div>
+
+<p>The NAND RS FF is an asynchronous transparent latch. If an input of a NAND goes low, its output will go high. The feedback line will set the other NAND output low, provided its input is inactive (high).</p>
+
+<figure class="figure"><figcaption>Schematics</figcaption>
+<img src="rs-flipflop-nand/fig-001.png" width="500" />
+</figure>
+
+<p>The following table shows some state transitions for the NAND RS flipflop:</p>
+
+<table class="webcat-logic"><thead><tr>
+	<th scope="col">Step</th>
+	<th scope="col" class="webcat-overline">S</th>
+	<th scope="col" class="webcat-overline">R</th>
+	<th scope="col">Q</th>
+	<th scope="col"class="webcat-overline">Q</th>
+</tr></thead><tbody><tr>
+	<th scope="row">0</th>
+	<td>1</td>
+	<td>1</td>
+	<td>x</td>
+	<td>x</td>
+</tr><tr>
+	<th scope="row">1</th>
+	<td>0</td>
+	<td>1</td>
+	<td>1</td>
+	<td>0</td>
+</tr><tr>
+	<th scope="row">2</th>
+	<td>1</td>
+	<td>1</td>
+	<td>1</td>
+	<td>0</td>
+</tr><tr>
+	<th scope="row">3</th>
+	<td>1</td>
+	<td>0</td>
+	<td>0</td>
+	<td>1</td>
+</tr><tr>
+	<th scope="row">4</th>
+	<td>1</td>
+	<td>1</td>
+	<td>0</td>
+	<td>1</td>
+</tr><tr>
+	<th scope="row">5</th>
+	<td>0</td>
+	<td>0</td>
+	<td>1</td>
+	<td>1</td>
+</tr><tr>
+	<th scope="row">6</th>
+	<td>1</td>
+	<td>1</td>
+	<td>?</td>
+	<td>?</td>
+</tr></tbody></table>
+
+<p>In step 0, the state of the flipflop is undetermined, both inputs are inactive (1). If one of the inputs is activated (steps 1 or 3), the output Q is set (step 1) or reset (step 3).</p>
+
+<p>In both inputs are activated (step 5), both outputs go high. If both inputs are then deactivated (step 6), the state of the outputs is undetermined: There is an internal race condition. Therefore, the initial state of an RS flipflop should be determined by a reset circuit.</p>
+
+<figure class="figure"><figcaption>Signals</figcaption>
+<img src="rs-flipflop-nand/fig-002.png" width="500" />
+</figure>
+
+<p>The simulation shows ringing outputs at the beginning, while both inputs are inactive. In practice, this should not happen because of natural asymmetries in the physical circuit.</p>
+
+<figure class="figure"><figcaption>Signals</figcaption>
+<img src="rs-flipflop-nand/fig-003.png" width="500" />
+</figure>
+
+</div><!--h2--NAND RS Flipflop-->
+
+<h2 cbc>Gated NAND RS Latch</h2><div>
+
+<p>The gated (or clocked) RS latch has two gates at the input. They disable the R and S inputs while the clock intput C is low.</p>
+
+<figure class="figure"><figcaption>Schematics</figcaption>
+<img src="gated-nand-latch/fig-001.png" width="500" />
+</figure>
+
+<p>The timing diagram shows the clock signal in the first row, followed by the S and <span class="webcat-overline">S</span> signals in the middle, the R and <span class="webcat-overline">R</span> signal, followed by Q and <span class="webcat-overline">Q</span>. We can see that the clock input "shapes" the flip-flop input signals, the flip-flop made of U2C and U2D behaves like the "regular" NAND RS latch.</p>
+
+<figure class="figure"><figcaption>Signals</figcaption>
+<img src="gated-nand-latch/fig-002.png" width="500" />
+</figure>
+
+</div><!--h2--Gated NAND RS Flip-Flop-->
+
+<h2 cbc>D-Type Flip-Flops</h2><div>
+
+<p>The 74HC74 is a positive edge-triggered dual D-type flip-flop with asynchronous /set and /reset inputs.</p>
+
+<figure class="figure"><figcaption>Schematics</figcaption>
+<img src="d-ff-7474/fig-001.png" width="500" />
+</figure>
+
+<p>There is the timing diagram:</p>
+
+<figure class="figure"><figcaption>Behavior</figcaption>
+<img src="d-ff-7474/fig-002.png" width="500" />
+</figure>
+
+<p>The R and S signals show how to asynchronously reset or set the flip-flop state. Note that R and S should not both be active at the same time.</p>
+<p>At 80 &micro;s, the clock input C receives a rising edge, which causes the state of the D input to be accepted. Since Q is already low, nothing happes at the outputs.</p>
+<p>Then D changes to high, and the following rising clock edge at 120 &micro;s causes the outputs to toggle, and again at 160 &micro;s.</p>
+<p>Note that the state does not change after the rising clock edge, even if D toggles while C is high.</p>
+
+</div><!--h2-D-Type Flip-Flops-->
+
+</body></html>

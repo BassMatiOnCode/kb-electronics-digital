@@ -1,0 +1,20 @@
+* 74HC75 ngspice behavioral model
+* USP 2026-02-03
+* Pinout: Q1n D1 D2 E34 VCC D3 D4 Q4n Q4 Q3 Q3n GND E12 Q2n Q2 Q1
+
+.subckt 74HC75 Q1n D1 D2 E34 VCC D3 D4 Q4n Q4 Q3 Q3n GND E12 Q2n Q2 Q1 
+* Logic: If E is High, Q = D.
+
+* Timing model for 74HC logic (approx 15ns delay at 5V)
+.model MyLatch d_latch(data_delay=15n clk_delay=15n)
+
+
+* Units 1 & 2 (Controlled by E12)
+A1 [D1] [E12] [NULL] [NULL] [NULL] [NULL] [Q1] [Q1n] MyLatch
+A2 [D2] [E12] [NULL] [NULL] [NULL] [NULL] [Q2] [Q2n] MyLatch
+
+* Units 3 & 4 (Controlled by E34)
+A3 [D3] [E34] [NULL] [NULL] [NULL] [NULL] [Q3] [Q3n] MyLatch
+A4 [D4] [E34] [NULL] [NULL] [NULL] [NULL] [Q4] [Q4n] MyLatch
+
+.ends
